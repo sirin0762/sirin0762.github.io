@@ -2,7 +2,8 @@
 layout: post
 title: 'chapter 13 복습'
 date: 2020-10-14
-category: practice
+categories: [algorithm, python]
+tags: [algorithm]
 ---
 ## 15번 문제 : 특정 거리의 도시 찾기
 ```python
