@@ -1,5 +1,4 @@
 ---
-layout: post
 title: 'chapter 13 복습'
 date: 2020-10-14
 categories: [algorithm, python]
@@ -15,7 +14,7 @@ tags: [algorithm]
 from collections import deque
 
 
-n, m, k, x = map(int, input().split()) 
+n, m, k, x = map(int, input().split())
 graph = [[] * (n + 1) for _ in range(n + 1)] # 그래프 생성
 
 # 그래프 입력(linked graph)
@@ -31,18 +30,18 @@ def bfs(start):
   distance = 0
   dist[start] = distance
   q.append(start)
-  
+
   while q:
-    
+
     distance += 1
-    
+
     for _ in range(len(q)):
       start = q.popleft()
-      
+
       for i in graph[start]:
         dist[i] = min(dist[i], distance)
         q.append(i)
-        
+
 bfs(x)
 
 result = False
@@ -81,23 +80,23 @@ def get_score():
     for j in range(m):
       if temp[i][j] == 0:
         result += -1
-        
+
   return result
 
 def virus(x, y):
   q = deque()
   q.append((x, y))
   dx, dy = [-1, 1, 0, 0], [0, 0, -1, 1]
-  
+
   while q:
     x, y = q.popleft()
-    
+
     for i in range(4):
       nx, ny = x + dx[i], y + dy[i]
-      
+
       if nx >= n or ny >= m or nx < 0 or ny < 0:
         continue
-      
+
       if temp[nx][ny] == 0:
         q.append((nx, ny))
         temp[nx][ny] = 2
@@ -108,15 +107,15 @@ def dfs(count):
     for i in range(n):
       for j in range(m):
         temp[i][j] = lab[i][j]
-    
+
     for i in range(n):
       for j in range(m):
         if temp[i][j] == 2:
           virus(i, j)
-          
+
     result = max(get_score(), result)
     return
-  
+
   for i in range(n):
     for j in range(m):
       if lab[i][j] == 0:
@@ -125,7 +124,7 @@ def dfs(count):
         dfs(count)
         lab[i][j] = 0
         count -= 1
-        
+
 dfs(0)
 print(result)
 ```
@@ -136,7 +135,7 @@ print(result)
 # n x n  시험관, 1 x 1 크기의 칸이고 각각의 칸에는 바이러스 존재가 가능, 바이러스는 1 ~ k까지 k 가지 있으며 모든 바이러스는 이 중 하나의 속함
 # 바이러스는 1초마다 상하 좌우 조 증식함, 매초 번호가 낮은 종류의 바이러스 부터 증식, 바이러스가 있는 곳에는 다른 바이러스 침입 불가
 # 시험관의 크기와 바이러스의 위치 정보가 주어졌을 때, s 초가 지난 후에 (x, y)에 존재하는 바이러스의 종류를 출력하는 프로그램 작성
-# 초가 시작 되면 -> 바이러스가 낮은 순으로 부터 증식 
+# 초가 시작 되면 -> 바이러스가 낮은 순으로 부터 증식
 
 n, k = map(int, input().split())
 maps = [list(map(int, input().split())) for _ in range(n)]
@@ -147,14 +146,14 @@ def virus(x, y):
   dx, dy = [-1, 1, 0, 0], [0, 0, -1, 1]
   for i in range(4):
     nx, ny = x + dx[i], y + dy[i]
-    
+
     if nx >= n or ny >= n or nx < 0 or ny < 0:
       continue
-    
+
     if maps[nx][ny] == 0 and visited[nx][ny] == False:
       visited[nx][ny] = True
-      maps[nx][ny] = maps[x][y] 
-    
+      maps[nx][ny] = maps[x][y]
+
 count = 0
 
 while count < s:
@@ -164,7 +163,7 @@ while count < s:
       for j in range(n):
         if maps[i][j] == v and visited[i][j] == False:
           virus(i, j)
-          
+
   count += 1
 
 print(maps[x - 1][y - 1])
