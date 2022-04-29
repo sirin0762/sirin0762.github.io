@@ -1,0 +1,217 @@
+<!DOCTYPE html><html lang="en" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="day-prompt" content="days ago"><meta name="hour-prompt" content="hours ago"><meta name="minute-prompt" content="minutes ago"><meta name="justnow-prompt" content="just now"><meta name="generator" content="Jekyll v4.2.1" /><meta property="og:title" content="디자인 패턴(4.1) - Factory 패턴" /><meta property="og:locale" content="en" /><meta name="description" content="Design Pattern(4.1) : 팩토리 패턴" /><meta property="og:description" content="Design Pattern(4.1) : 팩토리 패턴" /><link rel="canonical" href="https://sirin0762.gitbub.io/posts/design(4)/" /><meta property="og:url" content="https://sirin0762.gitbub.io/posts/design(4)/" /><meta property="og:site_name" content="Sirin0762" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2022-01-03T15:07:22+08:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="디자인 패턴(4.1) - Factory 패턴" /><meta name="google-site-verification" content="google_meta_tag_verification" /> <script type="application/ld+json"> {"description":"Design Pattern(4.1) : 팩토리 패턴","url":"https://sirin0762.gitbub.io/posts/design(4)/","@type":"BlogPosting","headline":"디자인 패턴(4.1) - Factory 패턴","dateModified":"2022-01-04T16:46:07+08:00","datePublished":"2022-01-03T15:07:22+08:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://sirin0762.gitbub.io/posts/design(4)/"},"@context":"https://schema.org"}</script><title>디자인 패턴(4.1) - Factory 패턴 | Sirin0762</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Sirin0762"><meta name="application-name" content="Sirin0762"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin="use-credentials"><link rel="dns-prefetch" href="https://www.google-analytics.com"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous"><link rel="dns-prefetch" href="https://www.googletagmanager.com"><link rel="preconnect" href="https://cdn.jsdelivr.net"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1.1.0/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><body data-spy="scroll" data-target="#toc"><div id="sidebar" class="d-flex flex-column align-items-end" lang="en"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src="/assets/img/favicons/favicon.ico" alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Sirin0762</a></div><div class="site-subtitle font-italic">배움이 즐거운 누군가</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center align-items-center"> <a href="https://github.com/sirin0762" aria-label="github" class="order-3" target="_blank" rel="noopener"> <i class="fab fa-github"></i> </a> <a href="https://twitter.com/" aria-label="twitter" class="order-4" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['tlsdydwls123','gmail.com'].join('@')" aria-label="email" class="order-5" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" class="order-6" > <i class="fas fa-rss"></i> </a> <span class="icon-border order-2"></span> <span id="mode-toggle-wrapper" class="order-1"> <i class="mode-toggle fas fa-adjust"></i> <script type="text/javascript"> class ModeToggle { static get MODE_KEY() { return "mode"; } static get DARK_MODE() { return "dark"; } static get LIGHT_MODE() { return "light"; } constructor() { if (this.hasMode) { if (this.isDarkMode) { if (!this.isSysDarkPrefer) { this.setDark(); } } else { if (this.isSysDarkPrefer) { this.setLight(); } } } var self = this; /* always follow the system prefers */ this.sysDarkPrefers.addListener(function() { if (self.hasMode) { if (self.isDarkMode) { if (!self.isSysDarkPrefer) { self.setDark(); } } else { if (self.isSysDarkPrefer) { self.setLight(); } } self.clearMode(); } self.updateMermaid(); }); } /* constructor() */ setDark() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE); } setLight() { $('html').attr(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE); } clearMode() { $('html').removeAttr(ModeToggle.MODE_KEY); sessionStorage.removeItem(ModeToggle.MODE_KEY); } get sysDarkPrefers() { return window.matchMedia("(prefers-color-scheme: dark)"); } get isSysDarkPrefer() { return this.sysDarkPrefers.matches; } get isDarkMode() { return this.mode == ModeToggle.DARK_MODE; } get isLightMode() { return this.mode == ModeToggle.LIGHT_MODE; } get hasMode() { return this.mode != null; } get mode() { return sessionStorage.getItem(ModeToggle.MODE_KEY); } /* get the current mode on screen */ get modeStatus() { if (this.isDarkMode || (!this.hasMode && this.isSysDarkPrefer) ) { return ModeToggle.DARK_MODE; } else { return ModeToggle.LIGHT_MODE; } } updateMermaid() { if (typeof mermaid !== "undefined") { let expectedTheme = (this.modeStatus === ModeToggle.DARK_MODE? "dark" : "default"); let config = { theme: expectedTheme }; /* re-render the SVG › <https://github.com/mermaid-js/mermaid/issues/311#issuecomment-332557344> */ $(".mermaid").each(function() { let svgCode = $(this).prev().children().html(); $(this).removeAttr("data-processed"); $(this).html(svgCode); }); mermaid.initialize(config); mermaid.init(undefined, ".mermaid"); } } flipMode() { if (this.hasMode) { if (this.isSysDarkPrefer) { if (this.isLightMode) { this.clearMode(); } else { this.setLight(); } } else { if (this.isDarkMode) { this.clearMode(); } else { this.setDark(); } } } else { if (this.isSysDarkPrefer) { this.setLight(); } else { this.setDark(); } } this.updateMermaid(); } /* flipMode() */ } /* ModeToggle */ let toggle = new ModeToggle(); $(".mode-toggle").click(function() { toggle.flipMode(); }); </script> </span></div></div><div id="topbar-wrapper" class="row justify-content-center topbar-down"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Home </a> </span> <span>디자인 패턴(4.1) - Factory 패턴</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> <i class="fa fa-times-circle fa-fw" id="search-cleaner"></i> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="post-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>디자인 패턴(4.1) - Factory 패턴</h1><div class="post-meta text-muted d-flex flex-column"><div> <span class="semi-bold"> sirin0762 </span> on <span class="timeago " data-toggle="tooltip" data-placement="bottom" title="Mon, Jan 3, 2022, 3:07 PM +0800" >Jan 3<i class="unloaded">2022-01-03T15:07:22+08:00</i> </span></div><div> <span> Updated <span class="timeago lastmod" data-toggle="tooltip" data-placement="bottom" title="Tue, Jan 4, 2022, 5:46 PM +0900" >Jan 4<i class="unloaded">2022-01-04T16:46:07+08:00</i> </span> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1775 words">9 min read</span></div></div><div class="post-content"><h1 id="design-pattern41--팩토리-패턴">Design Pattern(4.1) : 팩토리 패턴</h1><p>이 글은 <code class="language-plaintext highlighter-rouge">Head First Design Patterns</code> 을 읽고 정리한 글입니다.</p><p>이 장에서는 객체의 인스턴스를 만드는 작업이 항상 공개되어 있어야 하는 것은 아니며, 모든 것을 공개했다가는 결합과 관련된 문제가 생길 수 있다는 것을 배우게 될 것입니다.</p><h3 id="문제-이해">문제 이해</h3><p>우리는 피자 가게를 운영하고 있습니다. 그래서 다음과 같은 코드를 만들었다고 가정합니다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span text-data=" Java "><i class="fa-fw fas fa-code small"></i></span> <button aria-label="copy" title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre><span class="nc">Pizza</span> <span class="nf">orderPizza</span><span class="o">(){</span>
+  <span class="nc">Pizza</span> <span class="n">pizza</span><span class="o">=</span><span class="k">new</span> <span class="nc">Pizza</span><span class="o">();</span>
+
+  <span class="n">pizza</span><span class="o">.</span><span class="na">prepare</span><span class="o">();</span>
+  <span class="n">pizza</span><span class="o">.</span><span class="na">bake</span><span class="o">();</span>
+  <span class="n">pizza</span><span class="o">.</span><span class="na">cut</span><span class="o">();</span>
+  <span class="n">pizza</span><span class="o">.</span><span class="na">box</span><span class="o">();</span>
+  <span class="k">return</span> <span class="n">pizza</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></table></code></div></div><p>하지만 피자 종류는 한 두가지 가 아닙니다. 이를 위한 코드도 추가해줘야합니다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span text-data=" Java "><i class="fa-fw fas fa-code small"></i></span> <button aria-label="copy" title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre><td class="rouge-code"><pre><span class="nc">Pizza</span> <span class="nf">orderPizza</span><span class="o">(</span><span class="nc">String</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+	<span class="nc">Pizza</span> <span class="n">pizza</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Pizza</span><span class="o">();</span>
+
+	<span class="k">if</span><span class="o">(</span><span class="n">type</span> <span class="o">==</span> <span class="s">"cheese"</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">pizza</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CheesePizza</span><span class="o">();</span>
+	<span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">type</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"greek"</span><span class="o">))</span> <span class="o">{</span>
+		<span class="n">pizza</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GreekPizza</span><span class="o">();</span>
+	<span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">type</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"pepperoni"</span><span class="o">))</span> <span class="o">{</span>
+		<span class="n">pizza</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PappernoniPizza</span><span class="o">();</span>
+	<span class="o">}</span>
+
+	<span class="n">pizza</span><span class="o">.</span><span class="na">prepare</span><span class="o">();</span>
+	<span class="n">pizza</span><span class="o">.</span><span class="na">bake</span><span class="o">();</span>
+	<span class="n">pizza</span><span class="o">.</span><span class="na">cut</span><span class="o">();</span>
+  <span class="n">pizza</span><span class="o">.</span><span class="na">box</span><span class="o">();</span>
+  <span class="k">return</span> <span class="n">pizza</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></table></code></div></div><p>위의 if 문 코드는 피자에 새로운 제품을 추가하거나 뺄 때, 매번 코드 수정이 일어나야합니다. 디자인원칙인 <code class="language-plaintext highlighter-rouge">변화하는 부분과 변화하지 않는 부분을 나눠라</code>에서, 전형적인 변화에 해당하는 예시일 것입니다. 이 부분을 별도로 캡슐화 해야합니다.</p><p>객체 생성을 처리하는 기능를 팩토리라고 부릅니다. 일단 <code class="language-plaintext highlighter-rouge">SimplePizzaFactory</code> 클래스를 만들고 나면 orderPizza() 메서드는 새로 만든 객체의 클라이언트가 됩니다. orderPizza() 는 <code class="language-plaintext highlighter-rouge">Pizza</code> 의 종류에 상관없이 그저 팩토리에게 부탁해서 피자를 얻어와 주문작업을 이어가면됩니다.</p><h3 id="구현">구현</h3><p>간단한 피자 팩토리를 만들어봅시다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span text-data=" Java "><i class="fa-fw fas fa-code small"></i></span> <button aria-label="copy" title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimplePizzaFactory</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">Pizza</span> <span class="nf">createPizza</span><span class="o">(</span><span class="nc">String</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Pizza</span> <span class="n">pizza</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+        <span class="k">if</span><span class="o">(</span><span class="nc">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">type</span><span class="o">,</span> <span class="s">"cheese"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">pizza</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CheesePizza</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">type</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"greek"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">pizza</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">GreekPizza</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">type</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"pepperoni"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">pizza</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PappernoniPizza</span><span class="o">();</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="n">pizza</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></table></code></div></div><p>언뜻보기에는 그냥 if관련한 메서드만 따로 때놓은것 같습니다. 무슨 장점이 있을까요?</p><p>orderPizza() 메서드 안에 이 로직이 있다면 재사용이 불가능합니다. 예를 들어, 피자 가격만 얻으려는데 orderPizza를 호출하는건 이상하니까요. 피자를 생성하는 작업을 한 클래스에 캡슐화 시켜놓으면 구현을 변경해야하는 경우에 여기저기 다 들어가서 고칠 필요 없이 팩토리 클래스만 고치면 될 것입니다.</p><ul><li><p><strong>정적팩토리 메서드</strong></p><p>좀 뜬금없긴 하지만 팩토리를 static 메서드를 활용해서 만들기도 합니다. 그렇게 하면 별도의 객체의 인스턴스를 만들필요없이 메서드를 호출하기만 하면되는 장점이있습니다. 하지만 서브클래스를 만들어서 객체 생성 메서드의 행동을 변경할 수 없다는 단점이 있다는 것도 꼭 기억해두시면 좋을 것 같습니다.</p></ul><p>이제 <code class="language-plaintext highlighter-rouge">PizzaStore</code> 를 고쳐봅시다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span text-data=" Java "><i class="fa-fw fas fa-code small"></i></span> <button aria-label="copy" title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PizzaStore</span> <span class="o">{</span>
+
+    <span class="nc">SimplePizzaFactory</span> <span class="n">factory</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">PizzaStore</span><span class="o">(</span><span class="nc">SimplePizzaFactory</span> <span class="n">factory</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">factory</span> <span class="o">=</span> <span class="n">factory</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="nc">Pizza</span> <span class="nf">orderPizza</span><span class="o">(</span><span class="nc">String</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Pizza</span> <span class="n">pizza</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="na">createPizza</span><span class="o">(</span><span class="n">type</span><span class="o">);</span>
+
+        <span class="n">pizza</span><span class="o">.</span><span class="na">prepare</span><span class="o">();</span>
+        <span class="n">pizza</span><span class="o">.</span><span class="na">bake</span><span class="o">();</span>
+        <span class="n">pizza</span><span class="o">.</span><span class="na">cut</span><span class="o">();</span>
+        <span class="n">pizza</span><span class="o">.</span><span class="na">box</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">pizza</span><span class="o">;</span>
+    <span class="o">}</span>
+		<span class="o">...</span>
+<span class="o">}</span>
+</pre></table></code></div></div><p>사실 이런 간단한 팩토리를 디자인 패턴이라고 할 수는 없습니다. 프로그래밍을 하는데 있어서 자주 쓰이는 관용구에 가깝다고 할 수 있습니다.</p><h3 id="피자-프랜차이즈-사업">피자 프랜차이즈 사업</h3><p><code class="language-plaintext highlighter-rouge">PizzaStore</code> 가 큰 성공을 거둬서 인기를 끌게 되고 나니 많은 사람들이 자기 동네에도 <code class="language-plaintext highlighter-rouge">PizzaStore</code></p><p>있었으면 좋겠다는 바램을 가지게 되었습니다. 프랜차이즈를 운영하게 되면서, 지금까지 잘 써왔던 코드를 다른 지점에서 쓸 수 있도록 만들기로 했습니다.</p><p>하지만 지역별로 조금씩 입맛이 다릅니다. 그 지역의 특성과 입맛을 반영하여 다른 스타일의 피자(뉴욕 스타일, 시카고 스타일) 을 만들어야합니다.</p><p><strong>Just Do It</strong></p><p>일단 한번 해봅시다. 기존의 <code class="language-plaintext highlighter-rouge">SimplePizzaFactory</code> 를 뺴고 세가지 서로 다른 팩토리를 만들어 <code class="language-plaintext highlighter-rouge">PizzaStore</code> 에서 적당한 팩토리를 사용하도록 하면 분점에서도 전혀 문제없이 쓸 수 있을 것입니다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span text-data=" Java "><i class="fa-fw fas fa-code small"></i></span> <button aria-label="copy" title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre><span class="nc">NYPizzaFactory</span> <span class="n">factory</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NYPizzaFactory</span><span class="o">();</span>
+<span class="nc">PizzaStore</span> <span class="n">nyStore</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">PizzaStore</span><span class="o">(</span><span class="n">nyFactory</span><span class="o">);</span>
+<span class="n">nyStore</span><span class="o">.</span><span class="na">order</span><span class="o">(</span><span class="s">"Veggie"</span><span class="o">);</span>
+</pre></table></code></div></div><p>하지만 분점에서 우리가 만든 팩토리를 써서 피자를 만들긴 하는데, 독자적인 방법들을 추가해서 사용하기 시작했습니다.</p><p>이 문제를 다시 한번 생각해보니, <code class="language-plaintext highlighter-rouge">피자 가게와 피자 제작 과정 전체를 하나로 묶어주는 프레임워크를 만들어야 되겠다</code>는 결론에 도달했습니다. 물론 그렇게 하면서도 유연성을 잃어버리면 안되겠죠.</p><h3 id="피자-가게-프레임-워크">피자 가게 프레임 워크</h3><p>피자를 만드는 활동 자체는 전부 PizzaStore 클래스에 국한시키면서도 분점마다 고유의 스타일을 살릴 수 있도록 하는 방법이 있습니다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span text-data=" Java "><i class="fa-fw fas fa-code small"></i></span> <button aria-label="copy" title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">PizzaStore</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="nc">Pizza</span> <span class="nf">orderPizza</span><span class="o">(</span><span class="nc">String</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">Pizza</span> <span class="n">pizza</span> <span class="o">=</span> <span class="n">createPizza</span><span class="o">(</span><span class="n">type</span><span class="o">);</span>
+
+        <span class="n">pizza</span><span class="o">.</span><span class="na">prepare</span><span class="o">();</span>
+        <span class="n">pizza</span><span class="o">.</span><span class="na">bake</span><span class="o">();</span>
+        <span class="n">pizza</span><span class="o">.</span><span class="na">cut</span><span class="o">();</span>
+        <span class="n">pizza</span><span class="o">.</span><span class="na">box</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">pizza</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">abstract</span> <span class="nc">Pizza</span> <span class="nf">createPizza</span><span class="o">(</span><span class="nc">String</span> <span class="n">type</span><span class="o">);</span>
+
+<span class="o">}</span>
+</pre></table></code></div></div><p>이렇게 하면 각 분점을 위한 서브클래스에서 피자의 스타일을 결정할 것입니다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span text-data=" Java "><i class="fa-fw fas fa-code small"></i></span> <button aria-label="copy" title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">NYPizzaStore</span> <span class="kd">extends</span> <span class="nc">PizzaStore</span> <span class="o">{</span>
+
+    <span class="nd">@Override</span>
+    <span class="nc">Pizza</span> <span class="nf">createPizza</span><span class="o">(</span><span class="nc">String</span> <span class="n">item</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span><span class="o">(</span><span class="nc">Objects</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">item</span><span class="o">,</span> <span class="s">"cheese"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">NYCheesePizza</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">item</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"greek"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">NYGreekPizza</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="k">if</span><span class="o">(</span><span class="n">item</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="s">"pepperoni"</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="nf">NYPappernoniPizza</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></table></code></div></div><p>이제 Pizza 인스턴스를 만드는 일은 팩토리 역할을 하는 메소드 <code class="language-plaintext highlighter-rouge">createPizza()</code> 에서 맡아서 처리합니다.</p><p>이제 피자를 만들어봅시다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span text-data=" Java "><i class="fa-fw fas fa-code small"></i></span> <button aria-label="copy" title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">PizzaTestDrive</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">PizzaStore</span> <span class="n">nyStore</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">NYPizzaStore</span><span class="o">();</span>
+        <span class="nc">PizzaStore</span> <span class="n">chicagoStore</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ChicagoPizzaStore</span><span class="o">();</span>
+
+        <span class="nc">Pizza</span> <span class="n">pizza</span> <span class="o">=</span> <span class="n">nyStore</span><span class="o">.</span><span class="na">orderPizza</span><span class="o">(</span><span class="s">"cheese"</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Rosa ordered a "</span> <span class="o">+</span> <span class="n">pizza</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">"\n"</span><span class="o">);</span>
+
+        <span class="n">pizza</span> <span class="o">=</span> <span class="n">chicagoStore</span><span class="o">.</span><span class="na">orderPizza</span><span class="o">(</span><span class="s">"cheese"</span><span class="o">);</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Ian ordered a "</span> <span class="o">+</span> <span class="n">pizza</span><span class="o">.</span><span class="na">getName</span><span class="o">()</span> <span class="o">+</span> <span class="s">"\n"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</pre></table></code></div></div><p><img data-proofer-ignore data-src="../../assets/img/posts/2021-01-03-design(4)/Untitled.png" alt="Untitled" /></p><h3 id="요약">요약</h3><p>이렇게 슈퍼 클래스에서 기본적인 로직의 흐름을 만들고, 그 기능의 일부를 추상 메소드나 오버라이딩이 가능한 protected 메소드 등으로 만든 뒤 서브클래스에서 이런 메소드를 필요에 맞게 구현해서 사용하는 방법을 <code class="language-plaintext highlighter-rouge">템플릿 메소드 패턴</code> 이라고 한다. 또한 <code class="language-plaintext highlighter-rouge">PizzaStore</code> 의 예시 처럼, 서브클래스에서 구체적인 오브젝트 생성방법을 결정하게 하는 것을 <code class="language-plaintext highlighter-rouge">팩토리 메소드 패턴</code>이라고 부르기도 한다.</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/design-patterns/'>design patterns</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/design-patterns/" class="post-tag no-text-decoration" >design patterns</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/"> CC BY 4.0 </a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=디자인 패턴(4.1) - Factory 패턴 - Sirin0762&url=https://sirin0762.gitbub.io/posts/design(4)/" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=디자인 패턴(4.1) - Factory 패턴 - Sirin0762&u=https://sirin0762.gitbub.io/posts/design(4)/" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://telegram.me/share?text=디자인 패턴(4.1) - Factory 패턴 - Sirin0762&url=https://sirin0762.gitbub.io/posts/design(4)/" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="Copy link" title-succeed="Link copied successfully!"> </i> </span></div></div></div></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted topbar-down"><div class="access"><div id="access-lastmod" class="post"> <span>Recent Update</span><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/BOJ4963/">BOJ_4963 섬의 갯수 풀이</a><li><a href="/posts/BOJ16953/">BOJ_16953 A -> B 풀이</a><li><a href="/posts/BOJ1541/">BOJ_1541 잃어버린 괄호 풀이</a><li><a href="/posts/BOJ2003/">BOJ_2003 수들의 합2 풀이</a><li><a href="/posts/BOJ2217/">BOJ_2217 로프 풀이</a></ul></div><div id="access-tags"> <span>Trending Tags</span><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/algorithm/">algorithm</a> <a class="post-tag" href="/tags/design-patterns/">design patterns</a> <a class="post-tag" href="/tags/git/">git</a> <a class="post-tag" href="/tags/java/">Java</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"> <span class="pl-3 pt-2 mb-2">Contents</span><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="post-extend-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/design(5)/"><div class="card-body"> <span class="timeago small" >Jan 5<i class="unloaded">2022-01-05T14:46:22+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>디자인 패턴(5) - Singleton 패턴</h3><div class="text-muted small"><p> Design Pattern(5) - 싱글톤 패턴 이 글은 Head First Design Patterns 을 읽고 정리한 글입니다. 나는 유일무이하다 싱글톤 패턴은 객체의 인스턴스는 하나 뿐임을 보장하는 패턴입니다. 따라서 쓰레드 풀이나, 캐시, 설정 등의 하나만 있으면 되는 객체에 많이 적용됩니다. 그리고 싱글톤 패턴을 사용하면 전역 변수를 ...</p></div></div></a></div><div class="card"> <a href="/posts/design(6).md/"><div class="card-body"> <span class="timeago small" >Jan 9<i class="unloaded">2022-01-09T14:22:22+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>디자인 패턴(6) - Command 패턴</h3><div class="text-muted small"><p> Design Pattern(6) - Command 패턴 이 글은 Head First Design Patterns 을 읽고 정리한 글입니다. 문제 이해 이번에는 홈 오토메이션 리모컨의 API 디자인을 의뢰받았습니다. 이 리모컨에는 7가지 프로그래밍이 관한 슬롯과 각 슬롯에 대한 온 / 오프 스위치가 있습니다. 각 슬롯은 다른 서로 다른 가정용 기기...</p></div></div></a></div><div class="card"> <a href="/posts/design(7).md/"><div class="card-body"> <span class="timeago small" >Jan 11<i class="unloaded">2022-01-11T16:44:22+08:00</i> </span><h3 class="pt-0 mt-1 mb-3" data-toc-skip>디자인 패턴(7) - Adapter 패턴</h3><div class="text-muted small"><p> Design Pattern(7) : Adaptor 패턴 이 글은 Head First Design Patterns 을 읽고 정리한 글입니다. 객체지향 어댑터 어댑터는 클라이언트로부터 요청을 받아서 새로운 업체에서 제공하는 클래스에서 받아들일 수 있는 형태의 요청으로 변환시켜주는 중개인 역할을 합니다. 예시를 하나 들어봅시다. 1장에서 살펴보았던 ...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/design(3)/" class="btn btn-outline-primary" prompt="Older"><p>디자인 패턴(3) - Decorator 패턴</p></a> <a href="/posts/prgrms60057/" class="btn btn-outline-primary" prompt="Newer"><p>프로그래머스 문자열 압축 풀이</p></a></div></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center"><div class="footer-left"><p class="mb-0"> © 2022 <a href="https://github.com/sirin0762">sirin0762</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><h4 class="text-muted mb-4">Trending Tags</h4><a class="post-tag" href="/tags/algorithm/">algorithm</a> <a class="post-tag" href="/tags/design-patterns/">design patterns</a> <a class="post-tag" href="/tags/git/">git</a> <a class="post-tag" href="/tags/java/">Java</a></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/lozad/dist/lozad.min.js,npm/magnific-popup@1/dist/jquery.magnific-popup.min.js,npm/clipboard@2/dist/clipboard.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/popper.js@1.16.1,npm/bootstrap@4/dist/js/bootstrap.min.js"></script> <script defer src="/app.js"></script> <script defer src="https://www.googletagmanager.com/gtag/js?id="></script> <script> document.addEventListener("DOMContentLoaded", function(event) { window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', ''); }); </script>
